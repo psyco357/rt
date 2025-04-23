@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('username')->unique()->after('email_verified_at');
             $table->unsignedBigInteger('idanggota')->nullable()->after('id');
+            $table->unsignedBigInteger('role')->nullable()->after('remember_token');
             $table->integer('isactive')->default(0);
         });
     }
@@ -24,7 +25,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['username', 'idanggota', 'isactive']);
+            $table->dropColumn(['username', 'idanggota', 'isactive', 'role']);
         });
     }
 };

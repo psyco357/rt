@@ -14,6 +14,7 @@ class TransaksiModel extends Model
         'jumlah',
         'idgambar',
         'keterangan',
+        'author',
     ];
 
     public function anggota()
@@ -27,5 +28,10 @@ class TransaksiModel extends Model
     public function gambar()
     {
         return $this->belongsTo(GambarModel::class, 'idgambar', 'id');
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(AnggotaModel::class, 'author', 'id');
     }
 }

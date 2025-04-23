@@ -47,7 +47,7 @@
                </a>
            </li>
            <li>
-               <a href="laporan">
+               <a href="perubahan">
                    <div class="parent-icon"><i class="bi bi-house-fill"></i>
                    </div>
                    <div class="menu-title">Riwayat Perubaahn</div>
@@ -60,9 +60,9 @@
                    <div class="menu-title">User Management</div>
                </a>
                <ul>
-                   <li> <a href="penjualan"><i class="bi bi-circle"></i>Penjualan</a>
+                   <li> <a href="profil"><i class="bi bi-circle"></i>Profil</a>
                    </li>
-                   <li> <a href="reportjual"><i class="bi bi-circle"></i>Report Penjualan</a>
+                   <li> <a href="users"><i class="bi bi-circle"></i>Users</a>
                    </li>
                </ul>
            </li>

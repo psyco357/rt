@@ -32,9 +32,9 @@
                                     <img src="assets/images/avatars/avatar-1.png" alt="" class="rounded-circle"
                                         width="54" height="54">
                                     <div class="ms-3">
-                                        {{-- <h6 class="mb-0 dropdown-user-name">{{ $user->username }}</h6> --}}
-                                        {{-- <small
-                                            class="mb-0 dropdown-user-designation text-secondary">{{ $user->name }}</small> --}}
+                                        <h6 class="mb-0 dropdown-user-name"> {{ auth()->user()->name }} </h6>
+                                        <small
+                                            class="mb-0 dropdown-user-designation text-secondary">{{ auth()->user()->email }}</small>
                                     </div>
                                 </div>
                             </a>

@@ -1,9 +1,15 @@
+{{-- /**
+* Memilih data angggota dari database yang belum terinput di idanggota users
+* form input role, email, username, password, confirm password, status users
+* melakukan validasi
+* menyimpan data ke database users
+*/ --}}
 <!-- Modal Add New Anggota -->
-<div class="modal fade" id="modalAnggota" tabindex="-1" aria-labelledby="modalAnggotaLabel" aria-hidden="true">
+<div class="modal fade" id="modalUsers" tabindex="-1" aria-labelledby="modalUsersLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalAnggotaLabel">Add New Anggota</h5>
+                <h5 class="modal-title" id="modalUsersLabel">Add New @yield('title')</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -12,20 +18,49 @@
                     @csrf
                     <div class="mb-3">
                         <label for="noktp" class="form-label">No Ktp</label>
-                        <input type="text" class="form-control" id="noktp">
+                        {{-- <input type="text" class="form-control" id="noktp"> --}}
+                        <select name="idanggota" id="idanggota23" class="form-control">
+                            <option value="">Pilih Anggota</option>
+                            @foreach ($anggota as $item)
+                                <option value="{{ $item->id }}">{{ $item->ktp }} - {{ $item->nama }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="mb-3">
-                        <label for="namaanggota" class="form-label">Nama Anggota</label>
-                        <input type="text" class="form-control" id="namaanggota">
+                        <label for="addEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="addEmail">
                     </div>
                     <div class="mb-3">
-                        <label for="notelp" class="form-label">No Telp.</label>
-                        <input type="text" class="form-control" id="notelp">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username">
                     </div>
                     <div class="mb-3">
-                        <label for="alamat" class="form-label">Alamat Anggota</label>
-                        <textarea class="form-control" id="alamat" cols="30" rows="3"></textarea>
+                        <label for="role" class="form-label">Role</label>
+                        <select name="role" id="role" class="form-control">
+                            <option value="">Pilih Role</option>
+                            @foreach ($role as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">status</label>
+                        <select name="status" id="status" class="form-control">
+                            <option value="">Pilih Status</option>
+                            @foreach ($status as $item)
+                                <option value="{{ $item->id }}">{{ $item->namastatus }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="text" class="form-control" id="password">
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmpass" class="form-label">Ulangi Password</label>
+                        <input type="text" class="form-control" id="confirmpass">
+                    </div>
+
                     <button type="submit" class="btn btn-primary">Add Anggota</button>
                 </form>
             </div>
@@ -34,11 +69,11 @@
 </div>
 
 <!-- Modal for View Toko -->
-<div class="modal fade" id="viewTokoModal" tabindex="-1" aria-labelledby="viewTokoModalLabel" aria-hidden="true">
+<div class="modal fade" id="viewUsersModal" tabindex="-1" aria-labelledby="viewUsersModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="viewTokoModalLabel">View @yield('title')</h5>
+                <h5 class="modal-title" id="viewUsersModalLabel">View @yield('title')</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -52,11 +87,11 @@
 </div>
 
 <!-- Modal for Edit Toko -->
-<div class="modal fade" id="editTokoModal" tabindex="-1" aria-labelledby="editTokoModalLabel" aria-hidden="true">
+<div class="modal fade" id="editUsersModal" tabindex="-1" aria-labelledby="editUsersModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editTokoModalLabel">Edit @yield('title')</h5>
+                <h5 class="modal-title" id="editUsersModalLabel">Edit @yield('title')</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -87,12 +122,12 @@
 </div>
 
 <!-- Modal for Delete Confirmation -->
-<div class="modal fade" id="deleteTokoModal" tabindex="-1" aria-labelledby="deleteTokoModalLabel"
+<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteTokoModalLabel">Delete @yield('title')</h5>
+                <h5 class="modal-title" id="deleteUserModalLabel">Delete @yield('title')</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -105,6 +140,7 @@
         </div>
     </div>
 </div>
+
 
 
 <script>
@@ -123,6 +159,23 @@
     }
     // document.addEventListener('DOMContentLoaded', function() {
     // Handle the Add New Toko Form Submission
+
+    document.addEventListener('DOMContentLoaded', function() {
+        $('#modalUsers').on('shown.bs.modal', function() {
+            $('#idanggota23').select2({
+                theme: "bootstrap4",
+                width: $('#idanggota23').data("width") ?
+                    $('#idanggota23').data("width") : $('#idanggota23').hasClass("w-100") ?
+                    "100%" : "style",
+                placeholder: $('#idanggota23').data("placeholder"),
+                allowClear: Boolean($('#idanggota23').data("allow-clear")),
+                dropdownParent: $('#modalUsers'),
+                maximumSelectionLength: 3,
+                minimumInputLength: 3
+            });
+        });
+    });
+
     document.getElementById('addAnggotaForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -157,7 +210,7 @@
             .then(response => {
                 // alert(response.success);
                 notifikasi('success', response.success, 'bx bx-check-circle');
-                var addModal = new bootstrap.Modal(document.getElementById('modalAnggota'));
+                var addModal = new bootstrap.Modal(document.getElementById('modalUsers'));
                 addModal.hide();
                 location
                     .reload(); // Memuat ulang halaman untuk melihat toko yang baru ditambahkan
@@ -168,6 +221,7 @@
             });
     });
     // });
+
 
     // View Toko Function
     function viewToko(id) {
@@ -180,7 +234,7 @@
                 document.getElementById('view-nama').textContent = data.nama;
                 document.getElementById('view-notelpon').textContent = data.no_telepon;
                 document.getElementById('view-alamat').textContent = data.alamat;
-                var viewModal = new bootstrap.Modal(document.getElementById('viewTokoModal'));
+                var viewModal = new bootstrap.Modal(document.getElementById('viewUsersModal'));
                 viewModal.show();
             })
             .catch(error => {
@@ -199,7 +253,7 @@
                 document.getElementById('edit-nama').value = data.nama;
                 document.getElementById('edit-no_telepon').value = data.no_telepon;
                 document.getElementById('edit-alamat').value = data.alamat;
-                var editModal = new bootstrap.Modal(document.getElementById('editTokoModal'));
+                var editModal = new bootstrap.Modal(document.getElementById('editUsersModal'));
                 editModal.show();
             })
             .catch(error => {
@@ -239,7 +293,7 @@
             .then(response => {
                 notifikasi('success', response.success, 'bx bx-check-circle');
 
-                var editModal = new bootstrap.Modal(document.getElementById('editTokoModal'));
+                var editModal = new bootstrap.Modal(document.getElementById('editUsersModal'));
                 editModal.hide();
                 location.reload(); // Reload the page to reflect changes
             })
@@ -251,7 +305,7 @@
 
     // Delete Confirmation Function
     function confirmDelete(id) {
-        var deleteModal = new bootstrap.Modal(document.getElementById('deleteTokoModal'));
+        var deleteModal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
         deleteModal.show();
 
         document.getElementById('confirm-delete').addEventListener('click', function() {

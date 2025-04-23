@@ -18,6 +18,9 @@ return new class extends Migration
             $table->decimal('jumlah', 15, 2);
             $table->string('keterangan')->nullable();
             $table->integer('idgambar')->nullable();
+            $table->integer('status')->default(1);
+            $table->string('alasan')->nullable();
+            $table->unsignedBigInteger('author')->nullable();
             $table->timestamps();
         });
     }
