@@ -86,6 +86,7 @@ class TransaksiController extends Controller
     }
     public function update(Request $request, $id)
     {
+        // dd($request->all());
         try {
             // Validasi input
             $validated = $request->validate([
@@ -169,8 +170,14 @@ class TransaksiController extends Controller
 
     public  function laporan()
     {
-        $data = TransaksiModel::with(['anggota', 'gambar', 'jenistransaksi'])->get();
+        $data = TransaksiModel::with(['anggota', 'gambar', 'jenistransaksi', 'penulis', 'kategoristatus'])->get();
         // dd($data);
         return view('konten.laporantrans', compact('data'));
+    }
+    public function perubahan()
+    {
+        $data = TransaksiModel::with(['anggota', 'gambar', 'jenistransaksi', 'author'])->get();
+        // dd($data);
+        return view('konten.perubahantrans', compact('data'));
     }
 }

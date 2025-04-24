@@ -183,9 +183,6 @@
         dataTables('#{{ $tableId }}');
     });
 
-
-
-
     function notifikasi(response = 'success', massage = 'berhasil', icon = 'bx bx-check-circle') {
         Lobibox.notify(response, {
             pauseDelayOnHover: true,

@@ -2,6 +2,7 @@
 
 namespace App\Models\Data;
 
+use App\Models\Master\StatusModel;
 use Illuminate\Database\Eloquent\Model;
 
 class TransaksiModel extends Model
@@ -29,8 +30,11 @@ class TransaksiModel extends Model
     {
         return $this->belongsTo(GambarModel::class, 'idgambar', 'id');
     }
-
-    public function author()
+    public function kategoriStatus()
+    {
+        return $this->belongsTo(StatusModel::class, 'status', 'id');
+    }
+    public function penulis()
     {
         return $this->belongsTo(AnggotaModel::class, 'author', 'id');
     }

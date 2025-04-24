@@ -1,11 +1,11 @@
 @extends('layouts.pages')
-@section('title', 'Laporan Transaksi')
+@section('title', 'Perubahan Transaksi')
 @section('content')
     <div class="card">
         <div class="mb-3 mt-3 ms-3">
             <!-- Tombol Add New Toko -->
             <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#modalAnggota">
-                Jumlah Khas Saat ini :
+                Add New Anggota
             </button>
         </div>
         <div class="card-body">
@@ -14,33 +14,22 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Jenis Uang</th>
+                            <th>No Ktp</th>
                             <th>Nama Anggota</th>
-                            <th>Jumlah</th>
-                            <th>Status</th>
-                            <th>Aothor</th>
-                            <th>Tanggal Verifikasi</th>
+                            <th>No Telp</th>
+                            <th>Alamat Anggota</th>
                             <th>action</th>
                         </tr>
                     </thead>
                     <tbody>
 
                         @foreach ($data as $key => $item)
-                            {{-- @dd($item->penulis) --}}
                             <tr>
-                                <td>{{ $key + 1 }}</td>
-                                <td>{{ $item->jenistransaksi->namajenis }}</td>
-                                <td>{{ $item->anggota->nama }}</td>
-                                <td>{{ $item->jumlah }}</td>
-                                <td>
-                                    <span
-                                        class="badge rounded-pill {{ $item->status == 1 ? 'bg-info' : ($item->status == 2 ? 'bg-success' : 'bg-danger') }}">
-                                        {{ $item->kategoristatus->namastatus }}</span>
-
-
-                                </td>
-                                <td>{{ $item->status == 2 || $item->status == 3 ? $item->penulis->nama : '-' }}</td>
-                                <td>{{ $item->updated_at }}</td>
+                                <td>{{ $key + 1 }}</td> <!-- Menampilkan nomor urut -->
+                                <td>{{ $item->ktp }}</td> <!-- Menampilkan nama user -->
+                                <td>{{ $item->nama }}</td> <!-- Menampilkan nama user -->
+                                <td>{{ $item->no_telepon }}</td> <!-- Menampilkan posisi user -->
+                                <td>{{ $item->alamat }}</td> <!-- Menampilkan posisi user -->
                                 <td>
                                     <div class="table-actions d-flex align-items-center gap-3 fs-6">
                                         <!-- View Button -->
@@ -73,5 +62,5 @@
             </div>
         </div>
     </div>
-    @include('molekul.tablelaporan')
+    @include('molekul.tableperubahan')
 @endsection

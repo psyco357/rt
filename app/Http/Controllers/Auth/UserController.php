@@ -58,4 +58,10 @@ class UserController extends Controller
         return view('konten.users', compact(['data', 'anggota', 'role', 'status']));
     }
     //
+    public function profil()
+    {
+        $user = Auth::user();
+        $anggota = AnggotaModel::where('id', $user->idanggota)->first();
+        return view('konten.profil', compact(['user', 'anggota']));
+    }
 }

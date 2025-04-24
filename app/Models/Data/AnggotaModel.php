@@ -24,9 +24,9 @@ class AnggotaModel extends Model
     {
         return $this->hasMany(TransaksiModel::class, 'idanggota', 'id');
     }
-    public function author()
+    public function penulis()
     {
-        return $this->hasMany(AnggotaModel::class, 'author', 'id');
+        return $this->hasMany(TransaksiModel::class, 'author', 'id');
     }
     public function user()
     {

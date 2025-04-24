@@ -46,13 +46,13 @@
                    <div class="menu-title">Laporan Transaksi</div>
                </a>
            </li>
-           <li>
+           {{-- <li>
                <a href="perubahan">
                    <div class="parent-icon"><i class="bi bi-house-fill"></i>
                    </div>
                    <div class="menu-title">Riwayat Perubaahn</div>
                </a>
-           </li>
+           </li> --}}
            <li>
                <a href="javascript:;" class="has-arrow">
                    <div class="parent-icon"><i class="bi bi-house-fill"></i>
