@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
 use App\Models\Data\TransaksiModel;
+use App\Models\Master\KhasModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -14,15 +15,13 @@ class DashboardController extends Controller
     public function index()
     {
         // Mengambil data pengguna yang sedang login
-        $user = Auth::user();
+        // $user = Auth::user();
 
         // Mengambil data transaksiMTransaksiModel untuk pengguna yang sedang login
-        $totalUangMasuk = TransaksiModel::where('idanggota', $user->id)
-            ->where('jenistrans', 1)
+        $totalUangMasuk = TransaksiModel::where('jenistrans', 1)
             ->sum('jumlah');
 
-        $totalUangKeluar = TransaksiModel::where('idanggota', $user->id)
-            ->where('jenistrans', 2)
+        $totalUangKeluar = TransaksiModel::where('jenistrans', 2)
             ->sum('jumlah');
 
         $masuk = TransaksiModel::selectRaw('MONTH(created_at) AS bulan,SUM(jumlah) as total')
@@ -33,7 +32,6 @@ class DashboardController extends Controller
         $chartData = collect(range(1, 12))->map(function ($bulan) use ($masuk) {
             return $masuk->get($bulan, 0);
         });
-
         $keluar = TransaksiModel::selectRaw('MONTH(created_at) AS bulan,SUM(jumlah) as total')
             ->whereYear('created_at', today()->year)
             ->where('jenistrans', 2)
@@ -43,7 +41,26 @@ class DashboardController extends Controller
             return $keluar->get($bulan, 0);
         });
 
+        $khas = KhasModel::where('tahun', today()->year)->first();
+        $khasSekarang = KhasModel::where('tahun', today()->year)->first();
+        $khasLalu = KhasModel::where('tahun', today()->year - 1)->first();
+        // var_dump($nilaiSekarang,$);
+        $nilaiSekarang = $khasSekarang?->khas ?? 0; // Misalnya field yang dihitung bernama 'nilai'
+        $nilaiLalu = $khasLalu?->khas ?? 0;
 
+        // Hitung persentase kenaikan
+        if ($nilaiLalu == 0) {
+            $persentase = $nilaiSekarang > 0 ? 100 : 0; // anggap 100% jika ada kenaikan dari 0
+        } else {
+            $persentase = (($nilaiSekarang - $nilaiLalu) / $nilaiLalu) * 100;
+        }
+
+        // Format angka jika perlu
+        $persentase = round($persentase, 2);
+
+        // echo "Kenaikan: {$persentase}%";
+        // die;
+        // dd($khas);
 
         // Mengirim data ke view
         return view('konten.dashboard', [
@@ -51,6 +68,8 @@ class DashboardController extends Controller
             'chartKeluar' => $chartKeluar->values()->toJson(),
             'totalUangMasuk' => $totalUangMasuk,
             'totalUangKeluar' => $totalUangKeluar,
+            'khas' => $khas,
+            'persentase' => $persentase,
         ]);
     }
 

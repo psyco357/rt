@@ -4,71 +4,39 @@
 @section('content-subtitle', 'Dashboard Penjualan')
 
 @section('content')
-    <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-2 row-cols-xxl-4">
-        <div class="col">
+    <div class="row row-cols row-cols-lg row-cols-xl row-cols-xxl">
+        <div class="col-12">
             <div class="card overflow-hidden radius-10">
                 <div class="card-body">
                     <div class="d-flex align-items-stretch justify-content-between overflow-hidden">
                         <div class="w-50">
-                            <p>Total Khas</p>
-                            <h4 class="">8,542</h4>
+                            <p>Sisa Uang Khas</p>
+                            <h4 class="">Rp. {{ number_format($khas->khas, 2, ',', '.') }}</h4>
                         </div>
                         <div class="w-50">
-                            <p class="mb-3 float-end text-success">+ 16% <i class="bi bi-arrow-up"></i></p>
-                            <div id="chart1"></div>
+                            @php
+                                $warna =
+                                    $persentase > 0
+                                        ? 'text-success'
+                                        : ($persentase < 0
+                                            ? 'text-danger'
+                                            : 'text-secondary');
+                                $ikon = $persentase > 0 ? 'bi-arrow-up' : ($persentase < 0 ? 'bi-arrow-down' : '');
+                                $tanda = $persentase > 0 ? '+' : '';
+                            @endphp
+
+                            <p class="mb-3 float-end {{ $warna }}">
+                                {{ $tanda }}{{ $persentase }}% @if ($ikon)
+                                    <i class="bi {{ $ikon }}"></i>
+                                @endif
+                            </p>
+                            {{-- <div id="chart1"></div> --}}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="card overflow-hidden radius-10">
-                <div class="card-body">
-                    <div class="d-flex align-items-stretch justify-content-between overflow-hidden">
-                        <div class="w-50">
-                            <p>Total Hari Ini</p>
-                            <h4 class="">12.5M</h4>
-                        </div>
-                        <div class="w-50">
-                            <p class="mb-3 float-end text-danger">- 3.4% <i class="bi bi-arrow-down"></i></p>
-                            <div id="chart2"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card overflow-hidden radius-10">
-                <div class="card-body">
-                    <div class="d-flex align-items-stretch justify-content-between overflow-hidden">
-                        <div class="w-50">
-                            <p>Total Uang Masuk</p>
-                            <h4 class="">$64.5K</h4>
-                        </div>
-                        <div class="w-50">
-                            <p class="mb-3 float-end text-success">+ 24% <i class="bi bi-arrow-up"></i></p>
-                            <div id="chart3"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card overflow-hidden radius-10">
-                <div class="card-body">
-                    <div class="d-flex align-items-stretch justify-content-between overflow-hidden">
-                        <div class="w-50">
-                            <p>Total Uang Keluar</p>
-                            <h4 class="">25.8K</h4>
-                        </div>
-                        <div class="w-50">
-                            <p class="mb-3 float-end text-success">+ 8.2% <i class="bi bi-arrow-up"></i></p>
-                            <div id="chart4"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div><!--end row-->
     <div class="row">
         <div class="col-12 col-lg-6 d-flex">
