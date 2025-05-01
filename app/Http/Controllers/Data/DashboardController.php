@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Data\TransaksiModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -24,21 +25,32 @@ class DashboardController extends Controller
             ->where('jenistrans', 2)
             ->sum('jumlah');
 
-        $totalHariIni = TransaksiModel::where('idanggota', $user->id)
-            ->whereDate('created_at', today())
-            ->sum('jumlah');
+        $masuk = TransaksiModel::selectRaw('MONTH(created_at) AS bulan,SUM(jumlah) as total')
+            ->whereYear('created_at', today()->year)
+            ->where('jenistrans', 1)
+            ->groupBy('bulan')
+            ->pluck('total', 'bulan');
+        $chartData = collect(range(1, 12))->map(function ($bulan) use ($masuk) {
+            return $masuk->get($bulan, 0);
+        });
 
-        // Menghitung persentase perubahan (bisa disesuaikan dengan kebutuhan)
-        $persentaseMasuk = $this->calculatePersentase($user->id, 'masuk');
-        $persentaseKeluar = $this->calculatePersentase($user->id, 'keluar');
+        $keluar = TransaksiModel::selectRaw('MONTH(created_at) AS bulan,SUM(jumlah) as total')
+            ->whereYear('created_at', today()->year)
+            ->where('jenistrans', 2)
+            ->groupBy('bulan')
+            ->pluck('total', 'bulan');
+        $chartKeluar = collect(range(1, 12))->map(function ($bulan) use ($keluar) {
+            return $keluar->get($bulan, 0);
+        });
+
+
 
         // Mengirim data ke view
         return view('konten.dashboard', [
+            'chartData' => $chartData->values()->toJson(),
+            'chartKeluar' => $chartKeluar->values()->toJson(),
             'totalUangMasuk' => $totalUangMasuk,
             'totalUangKeluar' => $totalUangKeluar,
-            'totalHariIni' => $totalHariIni,
-            'persentaseMasuk' => $persentaseMasuk,
-            'persentaseKeluar' => $persentaseKeluar
         ]);
     }
 
