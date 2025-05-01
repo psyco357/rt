@@ -17,7 +17,8 @@ Route::post('/auth', [UserController::class, 'auth']);
 
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');
-    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+    // Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/anggota', [AnggotaController::class, 'anggotaView'])->name('anggota');
     Route::get('anggota/{id}', [AnggotaController::class, 'getAnggota'])->name('anggotabyid');
@@ -35,6 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('users');
 
     Route::get('/laporan', [TransaksiController::class, 'laporan'])->name('laporan');
+    Route::get('/laporan/{id}', [TransaksiController::class, 'getDetails'])->name('detaillaporan');
     Route::get('/perubahan', [TransaksiController::class, 'perubahan'])->name('perubahan');
     Route::get('/profil', [UserController::class, 'profil'])->name('profil');
+    Route::post('/updateprofil', [UserController::class, 'updateProfil'])->name('user.update');
 });

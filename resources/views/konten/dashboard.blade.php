@@ -10,7 +10,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-stretch justify-content-between overflow-hidden">
                         <div class="w-50">
-                            <p>Total Orders</p>
+                            <p>Total Khas</p>
                             <h4 class="">8,542</h4>
                         </div>
                         <div class="w-50">
@@ -26,7 +26,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-stretch justify-content-between overflow-hidden">
                         <div class="w-50">
-                            <p>Total Views</p>
+                            <p>Total Hari Ini</p>
                             <h4 class="">12.5M</h4>
                         </div>
                         <div class="w-50">
@@ -42,7 +42,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-stretch justify-content-between overflow-hidden">
                         <div class="w-50">
-                            <p>Revenue</p>
+                            <p>Total Uang Masuk</p>
                             <h4 class="">$64.5K</h4>
                         </div>
                         <div class="w-50">
@@ -58,7 +58,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-stretch justify-content-between overflow-hidden">
                         <div class="w-50">
-                            <p>Customers</p>
+                            <p>Total Uang Keluar</p>
                             <h4 class="">25.8K</h4>
                         </div>
                         <div class="w-50">
@@ -77,5 +77,5 @@
     <script src="{{ asset('assets/plugins/chartjs/js/Chart.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/chartjs/js/Chart.extension.js') }}"></script>
     <script src="{{ asset('assets/plugins/apexcharts-bundle/js/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('assets/js/index.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/index.js') }}"></script> --}}
 @endpush

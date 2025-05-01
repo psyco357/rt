@@ -3,10 +3,10 @@
 @section('content')
     <div class="card">
         <div class="mb-3 mt-3 ms-3">
-            <!-- Tombol Add New Toko -->
-            <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#modalAnggota">
-                Jumlah Khas Saat ini :
+            <button type="button" class="btn btn-info">Jumlah Khas Saat ini : Rp. {{ number_format($total, 2, '.', ',') }}
             </button>
+            {{-- <span class="badge rounded-pill bg-info text-dark">Jumlah Khas Saat ini :
+                {{ number_format($total, 2, ',', '.') }} </span> --}}
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -51,7 +51,7 @@
                                         </a>
 
                                         <!-- Edit Button -->
-                                        <a href="javascript:;" class="text-warning" data-bs-toggle="tooltip"
+                                        {{-- <a href="javascript:;" class="text-warning" data-bs-toggle="tooltip"
                                             data-bs-placement="bottom" title="Edit" data-id="{{ $item->id }}"
                                             onclick="editToko({{ $item->id }})">
                                             <i class="bi bi-pencil-fill"></i>
@@ -62,7 +62,7 @@
                                             data-bs-placement="bottom" title="Delete" data-id="{{ $item->id }}"
                                             onclick="confirmDelete({{ $item->id }})">
                                             <i class="bi bi-trash-fill"></i>
-                                        </a>
+                                        </a> --}}
                                     </div>
                                 </td>
                             </tr>
@@ -73,5 +73,5 @@
             </div>
         </div>
     </div>
-    @include('molekul.tablelaporan')
+    @include('molekul.modallaporan')
 @endsection

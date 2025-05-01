@@ -25,6 +25,7 @@ class UserModel extends Model
     public function anggota()
     {
         return $this->belongsTo(AnggotaModel::class, 'idanggota', 'id');
+        // return $this->hasOne(AnggotaModel::class);
     }
 
     public function roleUser()

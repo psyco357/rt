@@ -171,13 +171,27 @@ class TransaksiController extends Controller
     public  function laporan()
     {
         $data = TransaksiModel::with(['anggota', 'gambar', 'jenistransaksi', 'penulis', 'kategoristatus'])->get();
-        // dd($data);
-        return view('konten.laporantrans', compact('data'));
+        $jumlahkhas = KhasModel::all();
+        $total = 0;
+        foreach ($jumlahkhas as $khas) {
+            $total += $khas->khas;
+        }
+        return view('konten.laporantrans', compact(['data', 'total']));
     }
     public function perubahan()
     {
         $data = TransaksiModel::with(['anggota', 'gambar', 'jenistransaksi', 'author'])->get();
         // dd($data);
         return view('konten.perubahantrans', compact('data'));
+    }
+    public function getDetails(Request $request, $id)
+    {
+        // Temukan transaksi berdasarkan ID
+        $transaksi = TransaksiModel::with(['anggota', 'gambar', 'jenistransaksi', 'penulis', 'kategoristatus'])->findOrFail($id);
+        $khas = KhasModel::where('tahun', now()->year)->first();
+        $transaksi->total = $khas->khas;
+        // dd($transaksi);
+        // Kembalikan data transaksi dalam format JSON
+        return response()->json($transaksi);
     }
 }

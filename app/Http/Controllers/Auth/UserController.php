@@ -60,8 +60,61 @@ class UserController extends Controller
     //
     public function profil()
     {
-        $user = Auth::user();
+        $user = UserModel::with('anggota')->find(Auth::id());
+        // dd($user);
         $anggota = AnggotaModel::where('id', $user->idanggota)->first();
         return view('konten.profil', compact(['user', 'anggota']));
+    }
+    public function updateProfil(Request $request)
+    {
+        $user = UserModel::with('anggota')->find(Auth::id());
+        // dd($user->anggota->save());
+        try {
+            // Validasi jika perlu
+            $request->validate([
+                'username' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'namaanggota' => 'required|string|max:255',
+                'alamatanggota' => 'nullable|string|max:255',
+                'no_telepon' => 'nullable|string|max:20',
+            ]);
+
+            // Update user
+            $user->username = $request->username;
+            $user->email = $request->email;
+
+            // Periksa apakah anggota terkait ada
+            if ($user->anggota) {
+                $user->anggota->nama = $request->namaanggota;
+                $user->anggota->alamat = $request->alamatanggota;
+                $user->anggota->no_telepon = $request->no_telepon;
+
+                // Simpan perubahan anggota
+                $user->anggota->save();
+            }
+
+            if ($request->filled('new_password')) {
+                // Validasi password jika ada
+                $request->validate([
+                    'new_password' => 'nullable|string|min:8|confirmed',
+                ]);
+                $user->password = Hash::make($request->new_password);
+            }
+            // dd($request->filled('new_password'));
+            // Simpan perubahan user
+            if ($user->save()) {
+                return back()->with('success', 'Informasi berhasil diperbarui.');
+            }
+            return back()->withErrors($e->errors())->withInput();
+
+            // Return back with success message
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Mengembalikan error ke halaman sebelumnya
+            return back()->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            // Error lainnya
+            \Log::error('Error updating profile: ' . $e->getMessage()); // Log error ke file
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 }
