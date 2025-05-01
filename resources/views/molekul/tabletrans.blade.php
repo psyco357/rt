@@ -39,11 +39,11 @@
                     @if ($status == '1')
                         <td>
                             <a href="javascript:void(0)" class="btn btn-success btn-sm"
-                                onclick="etitTrans({{ $item->id }},2)">
+                                onclick="etitTrans({{ $item->id }},2,{{ $item->jenistransaksi->id }})">
                                 Setujui
                             </a>
                             <a href="javascript:void(0)" class="btn btn-danger btn-sm"
-                                onclick="etitTrans({{ $item->id }},3)">
+                                onclick="etitTrans({{ $item->id }},3,{{ $item->jenistransaksi->id }})">
                                 Tolak
                             </a>
                         </td>
@@ -69,6 +69,7 @@
                     @csrf
                     <input type="hidden" id="edit-id">
                     <input type="hidden" id="edit-status">
+                    <input type="hidden" id="edit-trans">
                     <input type="hidden" id="edit-author" value="{{ Auth::user()->id }}">
 
                     <div class="mb-3">
@@ -156,11 +157,12 @@
                 ordering: true, // Mengaktifkan pengurutan
                 info: true, // Menampilkan informasi jumlah data
                 lengthChange: true // Mengaktifkan pemilihan jumlah per halaman
+
             });
         }
     }
     // Edit Toko Function
-    function etitTrans(id, status) {
+    function etitTrans(id, status, trans) {
         // const url = `{{ url('anggota') }}/` + id;
         const updateUrl = "{{ route('transaksibyid', ':id') }}";
         const url = updateUrl.replace(':id', id);
@@ -170,6 +172,7 @@
                 console.log(data);
                 document.getElementById('edit-id').value = data.id;
                 document.getElementById('edit-status').value = status;
+                document.getElementById('edit-trans').value = trans;
                 document.getElementById('edit-alasan').value = '';
                 var editModal = new bootstrap.Modal(document.getElementById('editTrans'));
                 editModal.show();

@@ -16,6 +16,7 @@ class TransaksiModel extends Model
         'idgambar',
         'keterangan',
         'author',
+        'status'
     ];
 
     public function anggota()

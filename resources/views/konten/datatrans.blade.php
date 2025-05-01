@@ -72,6 +72,7 @@
             var csrfToken = document.querySelector('input[name="_token"]').value;
             var id = document.getElementById('edit-id').value;
             var status = document.getElementById('edit-status').value;
+            var trans = document.getElementById('edit-trans').value;
             var author = document.getElementById('edit-author').value;
             var alasan = document.getElementById('edit-alasan').value;
 
@@ -80,6 +81,7 @@
             var data = {
                 _token: csrfToken,
                 status: status,
+                trans: trans,
                 alasan: alasan,
                 author: author,
             };

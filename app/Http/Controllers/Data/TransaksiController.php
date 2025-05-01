@@ -60,10 +60,11 @@ class TransaksiController extends Controller
         try {
             TransaksiModel::create([
                 'idanggota' => $anggota->id,              // ID anggota yang ditemukan
-                'jenistransaksi' => $validated['jenistransaksi'],  // Jenis transaksi
+                'jenistrans' => $validated['jenistransaksi'],  // Jenis transaksi
                 'jumlah' => str_replace('.', '', $validated['jumlah']),         // Jumlah transaksi
                 'idgambar' => $gambarId,                    // Nama file gambar (null jika tidak ada file)
                 'keterangan' => $validated['keterangan'], // Keterangan transaksi
+                'status' => 1, // Keterangan transaksi
             ]);
 
             // Jika transaksi berhasil disimpan, tampilkan pesan sukses
@@ -90,6 +91,7 @@ class TransaksiController extends Controller
         try {
             // Validasi input
             $validated = $request->validate([
+                'trans' => 'required|integer',  // Validasi status transaksi
                 'status' => 'required|integer',  // Validasi status transaksi
                 'alasan' => 'required|string',    // Validasi keterangan
                 'author' => 'required',    // Validasi keterangan
@@ -105,22 +107,39 @@ class TransaksiController extends Controller
             // $transaksi->save();
             // dd($transaksi);
             if ($transaksi->save()) {
-                if ($validated['status'] == 2) {
-                    $tahun = now()->year;
+                if ($validated['trans'] == 1) {
+                    if ($validated['status'] == 2) {
+                        $tahun = now()->year;
+                        $khas = KhasModel::where('tahun', $tahun)->first();
 
-                    $khas = KhasModel::where('tahun', $tahun)->first();
+                        if ($khas) {
+                            $khas->khas += $transaksi->jumlah;
+                            $khas->save();
+                        } else {
+                            KhasModel::create([
+                                'tahun' => $tahun,
+                                'khas' => $transaksi->jumlah,
+                            ]);
+                        }
+                    }
+                } else {
+                    if ($validated['status'] == 2) {
+                        $tahun = now()->year;
+                        $khas = KhasModel::where('tahun', $tahun)->first();
 
-                    if ($khas) {
-                        $khas->khas += $transaksi->jumlah;
-                        $khas->save();
-                    } else {
-                        KhasModel::create([
-                            'tahun' => $tahun,
-                            'khas' => $transaksi->jumlah,
-                        ]);
+                        if ($khas) {
+                            $khas->khas -= $transaksi->jumlah;
+                            $khas->save();
+                        } else {
+                            KhasModel::create([
+                                'tahun' => $tahun,
+                                'khas' => $transaksi->jumlah,
+                            ]);
+                        }
                     }
                 }
             };
+
 
             // Jika update berhasil, kirimkan respons JSON sukses
             return response()->json([
