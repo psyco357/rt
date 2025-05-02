@@ -15,7 +15,9 @@ class DashboardController extends Controller
     public function index()
     {
         // Mengambil data pengguna yang sedang login
-        // $user = Auth::user();
+        $user = Auth::user();
+        // $user->role=2; //mengambil data sesuai ID user
+        // $user->role=1 atau 3; //mengambil semua data 
 
         // Mengambil data transaksiMTransaksiModel untuk pengguna yang sedang login
         $totalUangMasuk = TransaksiModel::where('jenistrans', 1)
@@ -58,9 +60,7 @@ class DashboardController extends Controller
         // Format angka jika perlu
         $persentase = round($persentase, 2);
 
-        // echo "Kenaikan: {$persentase}%";
-        // die;
-        // dd($khas);
+
 
         // Mengirim data ke view
         return view('konten.dashboard', [

@@ -9,6 +9,7 @@ use App\Models\Data\JenisTransModel;
 use App\Models\Data\TransaksiModel;
 use App\Models\Master\KhasModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Js;
 
 class TransaksiController extends Controller
@@ -17,7 +18,9 @@ class TransaksiController extends Controller
     public function index()
     {
         $jenis = JenisTransModel::all();
-        return view('konten.transaksi', compact('jenis'));
+        $anggota = AnggotaModel::find(Auth::user()->idanggota);
+        // dd($anggota);
+        return view('konten.transaksi', compact(['jenis', 'anggota']));
     }
     public function store(Request $request)
     {
@@ -77,11 +80,24 @@ class TransaksiController extends Controller
 
     public function dataTrans(Request $request)
     {
-        // Ambil data untuk setiap status
-        $dataMasuk = TransaksiModel::where('status', '1')->with(['anggota', 'gambar', 'jenistransaksi'])->get();
-        $dataSetujui = TransaksiModel::where('status', '2')->with(['anggota', 'gambar', 'jenistransaksi'])->get();
-        $dataTolak = TransaksiModel::where('status', '3')->with(['anggota', 'gambar', 'jenistransaksi'])->get();
+        $user = Auth::user();
 
+        // Buat base query
+        $queryMasuk = TransaksiModel::where('status', '1')->with(['anggota', 'gambar', 'jenistransaksi']);
+        $querySetujui = TransaksiModel::where('status', '2')->with(['anggota', 'gambar', 'jenistransaksi']);
+        $queryTolak = TransaksiModel::where('status', '3')->with(['anggota', 'gambar', 'jenistransaksi']);
+
+        // Jika role 2, tambahkan filter berdasarkan user_id
+        if ($user->role == 2) {
+            $queryMasuk->where('idanggota', $user->id_anggota);
+            $querySetujui->where('idanggota', $user->id_anggota);
+            $queryTolak->where('idanggota', $user->id_anggota);
+        }
+
+        // Ambil data
+        $dataMasuk = $queryMasuk->get();
+        $dataSetujui = $querySetujui->get();
+        $dataTolak = $queryTolak->get();
         return view('konten.datatrans', compact('dataMasuk', 'dataSetujui', 'dataTolak'));
         // return view('konten.datatrans', compact('data'));
     }
@@ -189,7 +205,15 @@ class TransaksiController extends Controller
 
     public  function laporan()
     {
-        $data = TransaksiModel::with(['anggota', 'gambar', 'jenistransaksi', 'penulis', 'kategoristatus'])->get();
+        $user = Auth::user();
+
+        $queryData = TransaksiModel::with(['anggota', 'gambar', 'jenistransaksi', 'penulis', 'kategoristatus']);
+        if ($user->role == 2) {
+            $queryData->where('idanggota', $user->id_anggota);
+        }
+
+        // Ambil data
+        $data = $queryData->get();
         $jumlahkhas = KhasModel::all();
         $total = 0;
         foreach ($jumlahkhas as $khas) {

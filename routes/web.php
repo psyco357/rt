@@ -4,9 +4,10 @@ use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Data\AnggotaController;
 use App\Http\Controllers\Data\DashboardController;
 use App\Http\Controllers\Data\TransaksiController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+// dd(Auth::user());
 // use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
-
 // Route::get('/', function () {
 //     return view('welcome');
 // });

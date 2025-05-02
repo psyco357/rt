@@ -31,14 +31,16 @@
                             <h5 class="mb-0">Transaksi Baru</h5>
                         </div>
                         <hr />
-
+                        {{-- {{ auth()->user() }} --}}
                         <form action="{{ route('transaksi.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row mb-3">
                                 <label for="ktp" class="col-sm-3 col-form-label">Masukan NIK</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" id="ktp" name="ktp"
-                                        onkeyup="checkNumber(this)" placeholder="Masukan NIK">
+                                        onkeyup="checkNumber(this)" placeholder="Masukan NIK"
+                                        value="{{ auth()->user()->role == 2 ? $anggota->ktp : '' }}"
+                                        {{ auth()->user()->role == 2 ? 'readonly' : '' }}>
                                 </div>
                             </div>
                             <div class="row mb-3">
