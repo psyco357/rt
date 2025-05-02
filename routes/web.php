@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/transaksi/{id}', [TransaksiController::class, 'getTransaksi'])->name('transaksibyid');
 
     Route::get('/users', [UserController::class, 'index'])->name('users');
+    Route::post('/addusers', [UserController::class, 'store'])->name('adduser');
 
     Route::get('/laporan', [TransaksiController::class, 'laporan'])->name('laporan');
     Route::get('/laporan/{id}', [TransaksiController::class, 'getDetails'])->name('detaillaporan');

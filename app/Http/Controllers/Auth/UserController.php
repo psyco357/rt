@@ -117,4 +117,36 @@ class UserController extends Controller
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
+
+    public function store(Request $request)
+    {
+        $validations = $request->validate([
+            'username' => 'required|string|max:255|unique:users,username',
+            'email' => 'required|email|max:255',
+            'ktp' => 'required|max:255',
+            'role' => 'nullable|string',
+            'status' => 'nullable|string',
+        ]);
+ 
+        $user = new UserModel;
+        $user->idanggota = $request->ktp;
+        $user->email = $request->email;
+        $user->username = $request->username;
+        $user->name = $request->username;
+        $user->role = $request->role;
+        $user->isactive = $request->status;
+        if ($request->filled('password')) {
+            // Validasi password jika ada
+            $request->validate([
+                'password' => 'nullable|string|confirmed',
+            ]);
+            $user->password = Hash::make($request->password);
+        }
+        // dd($user->password);
+        if ($user->save()) {
+            return response()->json(['success' => 'User berhasil ditambahkan']);
+        } else {
+            return response()->json(['error' => 'Gagal menyimpan user'], 500);
+        }
+    }
 }

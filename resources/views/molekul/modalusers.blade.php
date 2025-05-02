@@ -13,7 +13,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addAnggotaForm">
+                <form id="addUser">
                     {{-- @dd($columns) --}}
                     @csrf
                     <div class="mb-3">
@@ -176,29 +176,34 @@
         });
     });
 
-    document.getElementById('addAnggotaForm').addEventListener('submit', function(e) {
+    document.getElementById('addUser').addEventListener('submit', function(e) {
         e.preventDefault();
 
         // Ambil CSRF Token dari form input hidden
         var csrfToken = document.querySelector('input[name="_token"]').value;
 
-        var ktp = document.getElementById('noktp').value;
-        var nama = document.getElementById('namaanggota').value;
-        var no_telepon = document.getElementById('notelp').value;
-        var alamat = document.getElementById('alamat').value;
+        var ktp = document.getElementById('idanggota23').value;
+        var email = document.getElementById('addEmail').value;
+        var username = document.getElementById('username').value;
+        var role = document.getElementById('role').value;
+        var status = document.getElementById('status').value;
+        var pass = document.getElementById('password').value;
         // var alamattoko = document.getElementById('notelp').value;
-
+        var passConf = document.getElementById('confirmpass').value;
         // Siapkan data untuk dikirimkan
         var data = {
             _token: csrfToken,
             ktp: ktp,
-            nama: nama,
-            no_telepon: no_telepon,
-            alamat: alamat,
+            email: email,
+            username: username,
+            role: role,
+            status: status,
+            password: pass,
+            password_confirmation: passConf
         };
 
         // Kirim data menggunakan fetch
-        const createUrl = "{{ route('saveanggota') }}";
+        const createUrl = "{{ route('adduser') }}";
         fetch(createUrl, {
                 method: 'POST',
                 headers: {
